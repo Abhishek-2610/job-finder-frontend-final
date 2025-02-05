@@ -30,3 +30,4 @@ const MarqueeItem = ({ images, from, to }) => {
 };
 
 export default MarqueeItem;
+

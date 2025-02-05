@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,28 +11,32 @@ export default function NavBar() {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img src="/logo.svg" alt="Logo" className="h-8 w-8" />
-            <span className="text-xl font-bold text-gray-100">Job finder</span>
+            <span className="text-xl font-bold text-gray-100">Job Finder</span>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
-            <a href="#" className="text-white hover:text-blue-600 font-medium">Home</a>
-            <a href="#" className="text-white hover:text-blue-600 font-medium">Find Job</a>
-            <a href="#" className="text-white hover:text-blue-600 font-medium">Contact Us</a>
+            <Link to="/" className="text-white hover:text-blue-600 font-medium">Home</Link>
+            <Link to="/findjob" className="text-white hover:text-blue-600 font-medium">Find Jobs</Link>
+            <Link to="/contact" className="text-white hover:text-blue-600 font-medium">Contact Us</Link>
           </div>
 
           {/* Buttons */}
           <div className="hidden md:flex space-x-4">
-            <button className="px-4 py-2 text-blue-200 font-medium border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition">
-              Login
-            </button>
-            <button className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
-              Signup
-            </button>
+            <Link to="/login">
+              <button className="px-4 py-2 text-blue-200 font-medium border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition">
+                Login
+              </button>
+            </Link>
+            <Link to="/signup">
+              <button className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
+                Signup
+              </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-gray-700 focus:outline-none">
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white focus:outline-none">
             {isOpen ? "✖" : "☰"}
           </button>
         </div>
@@ -39,15 +44,19 @@ export default function NavBar() {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden flex flex-col space-y-4 py-4">
-            <a href="#" className="text-white hover:text-blue-600 font-medium">Home</a>
-            <a href="#" className="text-white hover:text-blue-600 font-medium">Find Job</a>
-            <a href="#" className="text-white hover:text-blue-600 font-medium">Contact Us</a>
-            <button className="w-full px-4 py-2 text-blue-600 font-medium border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition">
-              Login
-            </button>
-            <button className="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
-              Signup
-            </button>
+            <Link to="/" className="text-white hover:text-blue-600 font-medium">Home</Link>
+            <Link to="/findjob" className="text-white hover:text-blue-600 font-medium">Find jobs</Link>
+            <Link to="/contact" className="text-white hover:text-blue-600 font-medium">Contact Us</Link>
+            <Link to="/login">
+              <button className="w-full px-4 py-2 text-blue-600 font-medium border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition">
+                Login
+              </button>
+            </Link>
+            <Link to="/signup">
+              <button className="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
+                Signup
+              </button>
+            </Link>
           </div>
         )}
       </div>
