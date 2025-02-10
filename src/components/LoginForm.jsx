@@ -60,7 +60,7 @@ function LoginForm() {
       </label>
       <button
         type="submit"
-        className="mt-6 rounded-[8px] bg-gradient-to-r from-blue-400 via-green-200 to-purple-400  py-[8px] px-[12px] font-medium text-richblack-900"
+        className="mt-6 rounded-[8px] bg-blue-600 hover:bg-blue-400 transition-colors duration-300  py-[8px] px-[12px] font-medium text-white"
       >
         Sign In
       </button>

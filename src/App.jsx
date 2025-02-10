@@ -8,6 +8,7 @@ import Aboutus from "./pages/Aboutus";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ResumeFeatures from "./components/ResumeFeature";
+import JobSearch from "./components/JobSearch";
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
         
         {/* Contact Us Page */}
         <Route path="/contact" element={<Aboutus />} />
+
+        {/* Find Job Page */}
+        <Route path="/findjob" element={<JobSearch />} />
 
         {/* Login Page */}
         <Route path="/login" element={<Login />} />
