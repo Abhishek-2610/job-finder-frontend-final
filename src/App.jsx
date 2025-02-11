@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ResumeFeatures from "./components/ResumeFeature";
 import JobSearch from "./components/JobSearch";
+import ResumeBuilder from "./components/ResumeBuilder/ResumeBuilder";
+
 
 function App() {
   return (
@@ -21,7 +23,7 @@ function App() {
           element={
             <>
               <HeroSection />
-              <section className="container bg-gray-950 mx-auto w-full min-h-[70vh] text-white flex flex-col justify-center items-center p-4">
+              <section className=" bg-gray-950 mx-auto w-screen min-h-[70vh] text-white flex flex-col justify-center items-center">
                 <div className="text-3xl md:text-4xl mb-8 text-center font-semibold">
                   Get interview calls from top Companies
                 </div>
@@ -33,18 +35,11 @@ function App() {
             </>
           }
         />
-        
-        {/* Contact Us Page */}
         <Route path="/contact" element={<Aboutus />} />
-
-        {/* Find Job Page */}
         <Route path="/findjob" element={<JobSearch />} />
-
-        {/* Login Page */}
         <Route path="/login" element={<Login />} />
-
-        {/* Signup Page */}
         <Route path="/signup" element={<Signup />} />
+        <Route path="/temp" element={<ResumeBuilder />} />
       </Routes>
       
       
