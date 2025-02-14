@@ -1,6 +1,7 @@
 // src/components/JobSearch.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 // Define the job data array
 const jobData = [
@@ -43,8 +44,10 @@ const jobLocations = [...new Set(jobData.map((job) => job.location))];
 // Job Card Component
 const JobCard = ({ job }) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleApply = () => {
+  const handleApply = async () => {
+    const serverIP = import.meta.env.VITE_SERVER_IP;
     const profile = JSON.parse(localStorage.getItem("profileData")) || {};
     const experience = JSON.parse(localStorage.getItem("experienceData")) || [];
     const projects = JSON.parse(localStorage.getItem("projectData")) || [];
@@ -52,17 +55,109 @@ const JobCard = ({ job }) => {
     const skills = JSON.parse(localStorage.getItem("skillsData")) || {};
 
     // Check if all necessary data is available
+
+    const isProfileComplete = profile && profile.name && profile.email;
+    const isExperienceComplete = Array.isArray(experience) && experience.length > 0;
+    const isProjectsComplete = Array.isArray(projects) && projects.length > 0;
+    const isEducationComplete = education && Object.keys(education).length > 0;
+    const isSkillsComplete = skills && Object.keys(skills).length > 0;
+
     const isComplete =
-      profile.name &&
-      profile.email &&
-      experience.length > 0 &&
-      projects.length > 0 &&
-      Object.keys(education).length > 0 &&
-      Object.keys(skills).length > 0;
+      isProfileComplete &&
+      isExperienceComplete &&
+      isProjectsComplete &&
+      isEducationComplete &&
+      isSkillsComplete;
+
+    console.log('Validation Results:', {
+      isProfileComplete,
+      isExperienceComplete,
+      isProjectsComplete,
+      isEducationComplete,
+      isSkillsComplete,
+      isComplete
+    });
 
     if (isComplete) {
-      navigate("/select-template");
+      // navigate("/select-template");
+      try {
+        setIsLoading(true);
+        const formattedData = {
+          profile: {
+            firstName: profile.name ? profile.name.split(' ')[0] : '',
+            lastName: profile.name ? profile.name.split(' ').slice(1).join(' ') : '',
+            email: profile.email || '',
+            linkedinLink: profile.linkedin || '',
+            githubLink: profile.github || ''
+          },
+          education: [{
+            institution: education.institution || '',
+            grade: education.cgpa || '',
+            duration: education.duration || '',
+            location: education.location || ''
+          }],
+          projects: projects.map(project => ({
+            title: project.title || '',
+            description: project.description || '',
+            techStack: project.techStack || ''
+          })),
+          experience: experience.map(exp => ({
+            title: exp.title || '',
+            employer: exp.employee || '',
+            duration: exp.duration || '',
+            description: exp.description || ''
+          })),
+          skills: {
+            languages: skills.languages || '',
+            frameworks: skills.framework || '',
+            certifications: skills.certification || '',
+            courses: skills.courses || ''
+          },
+          // achievements: achievements,
+          user_prompt: "No user prompt were provided",
+          job_description: job.description || ''
+        };
+
+        console.log('Formatted data:', formattedData);
+
+        // Make API request with responseType blob to handle PDF
+        const response = await axios.post(`${serverIP}/igdtuw/girls/1`, formattedData, {
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/pdf'
+          }
+        });
+
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const fileName = `${profile.name.replace(/\s+/g, '_')}_resume.pdf`;
+        // Create object URL
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        // Clean up
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+        }, 1000);
+
+        alert('Resume generated successfully!');
+
+
+      } catch (error) {
+        console.error('Error generating resume:', error);
+        alert('Failed to generate resume. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
     } else {
+      // Navigate to resume builder after download starts
       navigate("/resume-builder");
     }
   };

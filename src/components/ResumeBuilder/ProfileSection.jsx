@@ -95,7 +95,7 @@ function ProfileSection({ data, setData }) {
               {...register("linkedin", {
                 required: "Enter valid LinkedIn",
                 pattern: {
-                  value: /^https:\/\/www\.linkedin\.com\/in\/[A-Za-z0-9_-]+$/,
+                  value: /^https:\/\/www\.linkedin\.com/,
                   message: "Enter valid LinkedIn",
                 },
               })}
