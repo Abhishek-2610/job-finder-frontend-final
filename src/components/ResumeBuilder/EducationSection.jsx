@@ -96,8 +96,8 @@ function EducationSection({ data, setData }) {
               onBlur={handleBlur}
               className={`w-full p-2 border rounded-md focus:outline-none transition-all duration-300 ${
                 errors.institution
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-blue-400'
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-400 focus:bg-blue-50'
               }`}
             />
             {errors.institution && (
@@ -117,8 +117,8 @@ function EducationSection({ data, setData }) {
               onBlur={handleBlur}
               className={`w-full p-2 border rounded-md focus:outline-none transition-all duration-300 ${
                 errors.duration
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-blue-400'
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-400 focus:bg-blue-50'
               }`}
             />
             {errors.duration && (
@@ -138,8 +138,8 @@ function EducationSection({ data, setData }) {
               onBlur={handleBlur}
               className={`w-full p-2 border rounded-md focus:outline-none transition-all duration-300 ${
                 errors.location
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-blue-400'
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-400 focus:bg-blue-50'
               }`}
             />
             {errors.location && (
@@ -159,8 +159,8 @@ function EducationSection({ data, setData }) {
               onBlur={handleBlur}
               className={`w-full p-2 border rounded-md focus:outline-none transition-all duration-300 ${
                 errors.cgpa
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-blue-400'
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-400 focus:bg-blue-50'
               }`}
             />
             {errors.cgpa && (

@@ -31,11 +31,27 @@ function ProjectsSection({ data, setData }) {
     description: '',
   });
 
+  // Common focus & style classes for inputs and textareas
+  const inputClasses =
+    "w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300";
+
+  // ---------- Add Form Handlers ----------
+
   // Handle changes for the add form
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProjectForm({ ...projectForm, [name]: value });
     if (value.trim() !== '') {
+      setErrorsAdd({ ...errorsAdd, [name]: '' });
+    }
+  };
+
+  // Validate required field on blur for the add form
+  const handleAddBlur = (e) => {
+    const { name, value } = e.target;
+    if (value.trim() === '') {
+      setErrorsAdd({ ...errorsAdd, [name]: 'This field is required' });
+    } else {
       setErrorsAdd({ ...errorsAdd, [name]: '' });
     }
   };
@@ -57,6 +73,7 @@ function ProjectsSection({ data, setData }) {
 
     setData([...data, projectForm]);
     setProjectForm({ title: '', duration: '', techStack: '', description: '' });
+    setErrorsAdd({ title: '', duration: '', techStack: '', description: '' });
     setShowAddForm(false);
   };
 
@@ -65,6 +82,8 @@ function ProjectsSection({ data, setData }) {
     const updatedData = data.filter((_, i) => i !== index);
     setData(updatedData);
   };
+
+  // ---------- Edit Form Handlers ----------
 
   // Begin editing a project
   const handleEditClick = (index) => {
@@ -78,6 +97,16 @@ function ProjectsSection({ data, setData }) {
     const { name, value } = e.target;
     setEditForm({ ...editForm, [name]: value });
     if (value.trim() !== '') {
+      setErrorsEdit({ ...errorsEdit, [name]: '' });
+    }
+  };
+
+  // Validate required field on blur for the edit form
+  const handleEditBlur = (e) => {
+    const { name, value } = e.target;
+    if (value.trim() === '') {
+      setErrorsEdit({ ...errorsEdit, [name]: 'This field is required' });
+    } else {
       setErrorsEdit({ ...errorsEdit, [name]: '' });
     }
   };
@@ -103,6 +132,7 @@ function ProjectsSection({ data, setData }) {
     setData(updatedData);
     setEditIndex(null);
     setEditForm({ title: '', duration: '', techStack: '', description: '' });
+    setErrorsEdit({ title: '', duration: '', techStack: '', description: '' });
   };
 
   // Cancel editing mode
@@ -134,7 +164,8 @@ function ProjectsSection({ data, setData }) {
               name="title"
               value={projectForm.title}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              onBlur={handleAddBlur}
+              className={inputClasses}
             />
             {errorsAdd.title && (
               <p className="text-red-500 text-sm mt-1">{errorsAdd.title}</p>
@@ -149,7 +180,8 @@ function ProjectsSection({ data, setData }) {
               name="duration"
               value={projectForm.duration}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              onBlur={handleAddBlur}
+              className={inputClasses}
             />
             {errorsAdd.duration && (
               <p className="text-red-500 text-sm mt-1">{errorsAdd.duration}</p>
@@ -164,7 +196,8 @@ function ProjectsSection({ data, setData }) {
               name="techStack"
               value={projectForm.techStack}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              onBlur={handleAddBlur}
+              className={inputClasses}
             />
             {errorsAdd.techStack && (
               <p className="text-red-500 text-sm mt-1">{errorsAdd.techStack}</p>
@@ -179,7 +212,8 @@ function ProjectsSection({ data, setData }) {
               name="description"
               value={projectForm.description}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              onBlur={handleAddBlur}
+              className={inputClasses}
             />
             {errorsAdd.description && (
               <p className="text-red-500 text-sm mt-1">{errorsAdd.description}</p>
@@ -205,10 +239,7 @@ function ProjectsSection({ data, setData }) {
 
       {/* Display Projects */}
       {data.map((project, index) => (
-        <div
-          key={index}
-          className="p-4 my-4 border border-green-500 rounded-md"
-        >
+        <div key={index} className="p-4 my-4 border border-green-500 rounded-md">
           {editIndex === index ? (
             <div>
               {/* Edit Title */}
@@ -220,7 +251,8 @@ function ProjectsSection({ data, setData }) {
                   name="title"
                   value={editForm.title}
                   onChange={handleEditChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+                  onBlur={handleEditBlur}
+                  className={inputClasses}
                 />
                 {errorsEdit.title && (
                   <p className="text-red-500 text-sm mt-1">{errorsEdit.title}</p>
@@ -235,7 +267,8 @@ function ProjectsSection({ data, setData }) {
                   name="duration"
                   value={editForm.duration}
                   onChange={handleEditChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+                  onBlur={handleEditBlur}
+                  className={inputClasses}
                 />
                 {errorsEdit.duration && (
                   <p className="text-red-500 text-sm mt-1">{errorsEdit.duration}</p>
@@ -250,7 +283,8 @@ function ProjectsSection({ data, setData }) {
                   name="techStack"
                   value={editForm.techStack}
                   onChange={handleEditChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+                  onBlur={handleEditBlur}
+                  className={inputClasses}
                 />
                 {errorsEdit.techStack && (
                   <p className="text-red-500 text-sm mt-1">{errorsEdit.techStack}</p>
@@ -265,7 +299,8 @@ function ProjectsSection({ data, setData }) {
                   name="description"
                   value={editForm.description}
                   onChange={handleEditChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+                  onBlur={handleEditBlur}
+                  className={inputClasses}
                 />
                 {errorsEdit.description && (
                   <p className="text-red-500 text-sm mt-1">{errorsEdit.description}</p>

@@ -92,8 +92,8 @@ function SkillsSection({ data, setData }) {
               onBlur={handleBlur}
               className={`w-full p-2 border rounded-md focus:outline-none transition-all duration-300 ${
                 errors.languages
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-blue-400'
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-400 focus:bg-blue-50'
               }`}
             />
             {errors.languages && (
@@ -113,8 +113,8 @@ function SkillsSection({ data, setData }) {
               onBlur={handleBlur}
               className={`w-full p-2 border rounded-md focus:outline-none transition-all duration-300 ${
                 errors.framework
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-blue-400'
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-400 focus:bg-blue-50'
               }`}
             />
             {errors.framework && (
@@ -134,8 +134,8 @@ function SkillsSection({ data, setData }) {
               onBlur={handleBlur}
               className={`w-full p-2 border rounded-md focus:outline-none transition-all duration-300 ${
                 errors.courses
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-blue-400'
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-400 focus:bg-blue-50'
               }`}
             />
             {errors.courses && (
@@ -155,8 +155,8 @@ function SkillsSection({ data, setData }) {
               onBlur={handleBlur}
               className={`w-full p-2 border rounded-md focus:outline-none transition-all duration-300 ${
                 errors.certification
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-blue-400'
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-400 focus:bg-blue-50'
               }`}
             />
             {errors.certification && (

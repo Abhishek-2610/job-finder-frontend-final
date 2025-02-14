@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+// src/components/JobSearch.js
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
+// Define the job data array
 const jobData = [
   { company_name: "Google", company_logo: "https://logo.google.com", description: "As a Frontend Developer, you will develop scalable web applications and create seamless user experiences.", role: "Frontend Developer", location: "Bengaluru" },
   { company_name: "Microsoft", company_logo: "https://logo.microsoft.com", description: "Join us as a Backend Developer to build robust backend systems and ensure high-performance infrastructure.", role: "Backend Developer", location: "Noida" },
@@ -33,20 +36,47 @@ const jobData = [
   { company_name: "Freshworks", company_logo: "https://logo.freshworks.com", description: "Develop customer engagement solutions that improve user experiences across digital platforms.", role: "Frontend Developer", location: "Chennai" }
 ];
 
-
-// Extract unique job roles & locations for dropdown options
-const jobRoles = [...new Set(jobData.map(job => job.role))];
-const jobLocations = [...new Set(jobData.map(job => job.location))];
+// ✅ Fix: Extract unique job roles & locations inside the component
+const jobRoles = [...new Set(jobData.map((job) => job.role))];
+const jobLocations = [...new Set(jobData.map((job) => job.location))];
 
 // Job Card Component
 const JobCard = ({ job }) => {
+  const navigate = useNavigate();
+
+  const handleApply = () => {
+    const profile = JSON.parse(localStorage.getItem("profileData")) || {};
+    const experience = JSON.parse(localStorage.getItem("experienceData")) || [];
+    const projects = JSON.parse(localStorage.getItem("projectData")) || [];
+    const education = JSON.parse(localStorage.getItem("educationData")) || {};
+    const skills = JSON.parse(localStorage.getItem("skillsData")) || {};
+
+    // Check if all necessary data is available
+    const isComplete =
+      profile.name &&
+      profile.email &&
+      experience.length > 0 &&
+      projects.length > 0 &&
+      Object.keys(education).length > 0 &&
+      Object.keys(skills).length > 0;
+
+    if (isComplete) {
+      navigate("/select-template");
+    } else {
+      navigate("/resume-builder");
+    }
+  };
+
   return (
     <div className="border p-4 rounded shadow bg-white flex flex-col items-start">
       <img src={job.company_logo} alt={job.company_name} className="w-16 h-16 mb-2" />
       <h2 className="text-lg font-bold">{job.company_name}</h2>
       <p className="text-sm font-semibold">{job.role} - {job.location}</p>
       <p className="text-gray-600 mb-2">{job.description}</p>
-      <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      <button
+        onClick={handleApply}
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
         Apply Now
       </button>
     </div>
@@ -54,30 +84,28 @@ const JobCard = ({ job }) => {
 };
 
 const JobSearch = () => {
-  const [jobs, setJobs] = useState([]); // All jobs
-  const [displayedJobs, setDisplayedJobs] = useState([]); // Jobs shown initially
-  const [selectedRole, setSelectedRole] = useState(''); // Selected job role
-  const [selectedLocation, setSelectedLocation] = useState(''); // Selected job location
+  const [jobs, setJobs] = useState([]);
+  const [displayedJobs, setDisplayedJobs] = useState([]);
+  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Initially shuffle and pick 10 random jobs
     const shuffledJobs = [...jobData].sort(() => 0.5 - Math.random()).slice(0, 10);
     setJobs(jobData);
     setDisplayedJobs(shuffledJobs);
   }, []);
 
-  // Function to filter jobs based on selected criteria
   const handleSearch = () => {
     setLoading(true);
     let filteredJobs = jobs;
 
     if (selectedRole) {
-      filteredJobs = filteredJobs.filter(job => job.role === selectedRole);
+      filteredJobs = filteredJobs.filter((job) => job.role === selectedRole);
     }
 
     if (selectedLocation) {
-      filteredJobs = filteredJobs.filter(job => job.location === selectedLocation);
+      filteredJobs = filteredJobs.filter((job) => job.location === selectedLocation);
     }
 
     setDisplayedJobs(filteredJobs.slice(0, 10));
@@ -130,7 +158,7 @@ const JobSearch = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {displayedJobs.length > 0 ? (
-          displayedJobs.map(job => <JobCard key={job.company_name + job.role} job={job} />)
+          displayedJobs.map((job) => <JobCard key={job.company_name + job.role} job={job} />)
         ) : (
           <p className="text-red-500">No jobs found for the selected filters.</p>
         )}
