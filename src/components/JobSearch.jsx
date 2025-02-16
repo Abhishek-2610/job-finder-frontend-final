@@ -44,7 +44,6 @@ const jobLocations = [...new Set(jobData.map((job) => job.location))];
 // Job Card Component
 const JobCard = ({ job }) => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleApply = async () => {
     const serverIP = import.meta.env.VITE_SERVER_IP;
@@ -53,6 +52,7 @@ const JobCard = ({ job }) => {
     const projects = JSON.parse(localStorage.getItem("projectData")) || [];
     const education = JSON.parse(localStorage.getItem("educationData")) || {};
     const skills = JSON.parse(localStorage.getItem("skillsData")) || {};
+    const achievementsData = JSON.parse(localStorage.getItem("achievementsData")) || [];
 
     // Check if all necessary data is available
 
@@ -113,7 +113,7 @@ const JobCard = ({ job }) => {
             certifications: skills.certification || '',
             courses: skills.courses || ''
           },
-          // achievements: achievements,
+          achievements: achievementsData,
           user_prompt: "No user prompt were provided",
           job_description: job.description || ''
         };
