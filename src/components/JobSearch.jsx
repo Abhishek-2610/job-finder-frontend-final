@@ -121,7 +121,7 @@ const JobCard = ({ job }) => {
         console.log('Formatted data:', formattedData);
 
         // Make API request with responseType blob to handle PDF
-        const response = await axios.post(`${serverIP}/igdtuw/girls/1`, formattedData, {
+        const response = await axios.post(`${serverIP}/igdtuw/girls/2`, formattedData, {
           responseType: 'blob',
           headers: {
             'Content-Type': 'application/json',
@@ -159,6 +159,7 @@ const JobCard = ({ job }) => {
     } else {
       // Navigate to resume builder after download starts
       navigate("/resume-builder");
+      alert('Please Fill the required field first to apply for the job');
     }
   };
 
