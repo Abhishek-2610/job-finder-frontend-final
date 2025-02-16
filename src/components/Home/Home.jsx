@@ -72,7 +72,7 @@ const Home = () => {
         </div>   
       </div>
       )}
-      <Footer />
+      {/* <Footer /> */}
       {errorMessage && <CustomDialog message={errorMessage} onClose={() => setErrorMessage('')} />}
     </div>
     
