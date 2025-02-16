@@ -1,0 +1,64 @@
+.Home {
+    background-color: white;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.Home .form {
+    display: flex;
+    margin-left: 150px;
+}
+
+.Home .left {
+    width: 400px;
+    margin-top: 10px;
+}
+
+.Home .right img {
+    width: 550px;
+}
+
+.Home .resumer {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.Home .intro {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.Home .buttons {
+    align-items: normal;
+}
+
+.Home .signup button {
+    width: 300px;
+    margin-bottom: 20px;
+    border-radius: 50px;
+    height: 40px;
+    background-color: #5f27c7;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    border-width: 0px;
+}
+
+.Home .login button {
+    width: 300px;
+    margin-bottom: 20px;
+    border-radius: 50px;
+    height: 40px;
+    background-color: #5f27c7;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    border-width: 0px;
+}
+
+.Home button:hover {
+    cursor: pointer;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+}
