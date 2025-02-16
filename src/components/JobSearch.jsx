@@ -69,15 +69,6 @@ const JobCard = ({ job }) => {
       isEducationComplete &&
       isSkillsComplete;
 
-    console.log('Validation Results:', {
-      isProfileComplete,
-      isExperienceComplete,
-      isProjectsComplete,
-      isEducationComplete,
-      isSkillsComplete,
-      isComplete
-    });
-
     if (isComplete) {
       // navigate("/select-template");
       try {
@@ -117,8 +108,6 @@ const JobCard = ({ job }) => {
           user_prompt: "No user prompt were provided",
           job_description: job.description || ''
         };
-
-        console.log('Formatted data:', formattedData);
 
         // Make API request with responseType blob to handle PDF
         const response = await axios.post(`${serverIP}/igdtuw/girls/2`, formattedData, {
