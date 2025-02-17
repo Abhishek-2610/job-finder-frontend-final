@@ -1,51 +1,58 @@
-// src/App.js
-import { Routes, Route } from "react-router-dom";
-import "./App.css";
-import NavBar from "./components/NavBar";
-import HeroSection from "./components/HeroSection";
-import Footer from "./components/Footer";
-import Marquee from "./components/Marquee";
-import Aboutus from "./pages/Aboutus";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import ResumeFeatures from "./components/ResumeFeature";
-import JobSearch from "./components/JobSearch";
-import ResumeBuilder from "./components/ResumeBuilder/ResumeBuilder";
-import TemplateSelection from "./components/TemplateSelection";
-import PreviewResume from "./components/PreviewResume"; // Optional: create this component as needed
+import React, { useState, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import NavBar from "./components/NavBar/NavBar";
+import Home from "./components/Home/Home";
+import Login from "./components/Login/Login";
+import Signup from "./components/Signup/Signup";
+import TemplateSelection from "./components/Generate/TemplateSelection";
+import Dashboard from "./components/Generate/Dashboard";
+import UserDetails from "./components/Details/userDetails";
+import MobileDialog from './components/MobileDialog/MobileDialog';
+import EditGeneratedResume from './components/Generate/EditGeneratedResume';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+
+  const checkDevice = () => {
+    setIsMobile(window.innerWidth < 768); // Mobile screen size threshold
+  };
+
+  useEffect(() => {
+    checkDevice(); // Check on initial render
+    window.addEventListener('resize', checkDevice); // Update on window resize
+
+    return () => {
+      window.removeEventListener('resize', checkDevice); // Cleanup listener
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      setShowDialog(true);
+    } else {
+      setShowDialog(false);
+    }
+  }, [isMobile]);
+
   return (
-    <>
-      <NavBar />
-      <Routes>
-        {/* Home Page */}
-        <Route
-          path="/"
-          element={
-            <>
-              <HeroSection />
-              <section className="bg-gray-950 mx-auto w-screen min-h-[70vh] text-white flex flex-col justify-center items-center">
-                <div className="text-3xl md:text-4xl mb-8 text-center font-semibold">
-                  Get interview calls from top Companies
-                </div>
-                <Marquee />
-              </section>
-              <ResumeFeatures />
-              <Footer />
-            </>
-          }
-        />
-        <Route path="/contact" element={<Aboutus />} />
-        <Route path="/findjob" element={<JobSearch />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        {/* Resume Routes */}
-        <Route path="/resume-builder" element={<ResumeBuilder />} />
-        <Route path="/select-template" element={<TemplateSelection />} />
-        <Route path="/preview-resume" element={<PreviewResume />} />
-      </Routes>
-    </>
+    <div>
+      {showDialog && <MobileDialog onClose={() => setShowDialog(false)} />}
+      {!showDialog && (
+        <>
+          <NavBar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/user-details' element={<UserDetails />} />
+            <Route path='/template-selection' element={<TemplateSelection />} />
+            <Route path='/dashboard/:template' element={<Dashboard />} />
+            <Route path='/editGeneratedResume' element={<EditGeneratedResume />} />
+          </Routes>
+        </>
+      )}
+    </div>
   );
 }
 

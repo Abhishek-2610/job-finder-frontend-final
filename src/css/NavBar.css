@@ -1,0 +1,29 @@
+.navbar{
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    background-color: #5f27c7;
+}
+.navbar p{
+    color: white;
+    font-weight: 700;
+    font-size: 24px;
+}
+.nav-items{
+    display: flex;
+    list-style: none;
+    gap: 50px;
+    color: #262626;
+    font-size: 22px;
+    color: white;
+    font-family: kanit;
+}
+.nav-items .active{
+    color:rgb(180, 175, 175);
+}
+.nav-items li:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
