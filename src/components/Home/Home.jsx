@@ -8,6 +8,13 @@ import Loader from '../Loader';
 import { decryptData } from '../../utils/crypto'
 import Footer from '../Footer'
 import CustomDialog from '../customDialog'
+import ResumeFeature from '../ResumeFeature'
+import Marquee from '../Marquee'
+import ProvenResumeTemplates from '../ProvenResumeTemplates'
+import ResumeMarquee from '../ResumeMarquee'
+import FAQsection from '../FAQsection'
+import { BackgroundBeamsWithCollision } from "../ui/background-beams-with-collision.jsx";
+
 
 
 const Home = () => {
@@ -52,27 +59,60 @@ const Home = () => {
   return (
     <div className=''>
       { isLoading ? <Loader /> :(
-      <div className='flex gap-10 m-20'>
-        <div>
-          <img className= 'h-[450px]' src={assets.homepage_img} alt="" />
+    
+      <BackgroundBeamsWithCollision>
+        <div className="flex flex-col items-center justify-center gap-3 text-center min-h-screen p-4 bg-slate-200">
+        
+        {/* Badge Section */}
+        <div className="rounded-full py-2 px-4 bg-gray-700 flex flex-row items-center mb-5">
+          <div className="rounded-full bg-blue-500 text-white mr-2">
+            <span className="py-1 px-2 text-xs md:text-sm">NEW</span>
+          </div>
+          <span className="text-white text-sm md:text-base">Create Resume in 5 mins</span>
         </div>
-        <div>
-        <h1 className='font-bold text-[34px] text-center ml-20'>The best resume builder AI <br />out there.</h1>
-        <p className='ml-10 mt-10 text-[18px]'><span className='text-[24px] font-bold'>63%</span> of recruiters like to get resumes personalized to the job position. </p>
-        <p className='ml-10 mt-2 text-[18px]'><span className='text-[24px] font-bold'>83%</span> of recruiters say they're more likely to hire a candidate who has a well-formatted resume. </p>
-        <p className='ml-10 mt-2 text-[18px]'><span className='text-[24px] font-bold'>60%</span> of hiring managers say they've found a typo on a resume. </p>
-        <div className='flex justify-center mt-20'>  {/* Added flex and justify-center */}
-          <button className='h-[40px] w-[300px] bg-[#5f27c7] text-white rounded-3xl hover:shadow-lg font-bold text-[18px]' onClick={()=>{
-              fetchUserData(() => {
-                dispatch(updateNavPage('profile'));
-                navigate('/user-details');
-              });
-          }}>Get Started</button>
+        
+        {/* Hero Title */}
+        <div className="relative text-3xl md:text-5xl text-black font-bold">
+          Your Dream Career Starts Here
         </div>
-        </div>   
+
+        {/* Gradient Text */}
+        <div className="relative text-3xl md:text-5xl bg-gradient-to-r from-blue-600 via-green-500 to-purple-700 text-transparent bg-clip-text font-bold block leading-tight p-2">
+          Effortless Resume Buildings.
+        </div>
+
+        {/* Description */}
+        <div className="relative p-2 text-gray-500 max-w-2xl font-bold text-sm md:text-base">
+          Craft a winning resume with our easy-to-use AI-powered builder. Select templates, input details, and get a ready-to-use resume in minutes! Start now.
+        </div>
+
+        {/* Gradient Buttons */}
+        <div className="flex flex-col md:flex-row gap-4 mt-4">
+          <button className="px-4 md:px-6 py-2 text-white font-semibold bg-gradient-to-r from-blue-400 to-green-400 rounded-2xl shadow-md hover:opacity-80 transition" onClick={()=>{
+               fetchUserData(() => {
+                 dispatch(updateNavPage('profile'));
+                 navigate('/user-details');
+               });
+           }}>
+            Get Started
+          </button>
+          <button className="px-4 md:px-6 py-2 text-white font-semibold bg-gradient-to-r from-purple-600 to-purple-400 rounded-2xl shadow-md hover:opacity-80 transition">
+            Learn More
+          </button>
+        </div>
       </div>
+        </BackgroundBeamsWithCollision>
+      
+      
       )}
-      {/* <Footer /> */}
+      <ResumeFeature/>
+      <Marquee/>
+      <ProvenResumeTemplates/>
+      <ResumeMarquee/>
+      <FAQsection/>
+      <Footer />
+      
+      
       {errorMessage && <CustomDialog message={errorMessage} onClose={() => setErrorMessage('')} />}
     </div>
     

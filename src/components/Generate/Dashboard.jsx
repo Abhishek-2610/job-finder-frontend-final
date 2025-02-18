@@ -194,7 +194,7 @@ const Dashboard = () => {
         <div className='flex-grow flex flex-col p-2'>
           <textarea
             value={job_description}
-            className='h-[200px] w-full border-2 p-4 resize-none rounded-2xl'
+            className='h-[200px] w-full border-2 p-4 resize-none rounded-2xl focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
             placeholder='Input Job description'
             style={{ boxSizing: 'border-box' }}
             onChange={(e) => setJobDescription(e.target.value)}
@@ -204,7 +204,7 @@ const Dashboard = () => {
         <div className='flex-grow flex flex-col p-2'>
           <textarea
             value={userPrompt}
-            className='h-[200px] w-full border-2 p-4 resize-none rounded-2xl'
+            className='h-[200px] w-full border-2 p-4 resize-none rounded-2xl focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
             placeholder='Enter your command for the AI agent here'
             style={{ boxSizing: 'border-box' }}
             onChange={(e) => setUserPrompt(e.target.value)}

@@ -10,22 +10,32 @@ const EditGeneratedResume = () => {
   const { payload } = location.state;
   const publicIp = import.meta.env.VITE_SERVER_IP;
   const userId = useSelector(state => decryptData(state.user.userId));
-  const [resumeData, setResumeData] = useState(payload);
+
+  // Initial State
+  const [resumeData, setResumeData] = useState({
+    ...payload,
+    // Add a user_prompt field if it doesn't exist
+    user_prompt: payload.user_prompt || ''
+  });
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [pdfBlobUrl, setPdfBlobUrl] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
 
-  //Form steps configuration
+ 
   const steps = [
-    {title: "Personal Details", key: "user_details"},
-    { title: "Education", key: "education" },
-    { title: "Projects", key: "PROJECTS" },
-    { title: "Experience", key: "EXPERIENCE" },
-    { title: "Skills", key: "skills" },
-    { title: "Achievements", key: "achievements" }
-  ]
+    { title: 'Personal Details', key: 'user_details' },
+    { title: 'Education', key: 'education' },
+    { title: 'Projects', key: 'PROJECTS' },
+    { title: 'Experience', key: 'EXPERIENCE' },
+    { title: 'Skills', key: 'skills' },
+    { title: 'Achievements', key: 'achievements' },
+    { title: 'User Prompt', key: 'user_prompt' }, 
+  ];
+
   
+
+  // 1. User Details
   const handleUserDetailsChange = (field, value) => {
     setResumeData(prev => ({
       ...prev,
@@ -36,7 +46,7 @@ const EditGeneratedResume = () => {
     }));
   };
 
-
+  // 2. Education
   const handleEducationChange = (index, field, value) => {
     setResumeData(prev => ({
       ...prev,
@@ -46,6 +56,7 @@ const EditGeneratedResume = () => {
     }));
   };
 
+  // 3. Projects / Experience (stored in Resume.PROJECTS and Resume.EXPERIENCE)
   const handleResumeChange = (section, index, value) => {
     setResumeData(prev => ({
       ...prev,
@@ -58,6 +69,7 @@ const EditGeneratedResume = () => {
     }));
   };
 
+  // 4. Skills
   const handleSkillsChange = (field, value) => {
     setResumeData(prev => ({
       ...prev,
@@ -68,6 +80,7 @@ const EditGeneratedResume = () => {
     }));
   };
 
+  // 5. Achievements
   const handleAchievementChange = (index, value) => {
     setResumeData(prev => ({
       ...prev,
@@ -77,11 +90,24 @@ const EditGeneratedResume = () => {
     }));
   };
 
+  // 6. User Prompt
+  const handleUserPromptChange = (value) => {
+    setResumeData(prev => ({
+      ...prev,
+      user_prompt: value
+    }));
+  };
+
+
+
   const handleAddItem = (section) => {
     if (section === 'education') {
       setResumeData(prev => ({
         ...prev,
-        education: [...prev.education, { Institution: '', Grade: '', Duration: '', Location: '' }]
+        education: [
+          ...prev.education,
+          { Institution: '', Grade: '', Duration: '', Location: '' }
+        ]
       }));
     } else if (section === 'PROJECTS' || section === 'EXPERIENCE') {
       setResumeData(prev => ({
@@ -121,20 +147,29 @@ const EditGeneratedResume = () => {
     }
   };
 
+  
+
   const handleSave = async () => {
     setIsLoading(true);
-    
-    prompt = payload.user_prompt ? payload.user_prompt : 'No prompt provided by user';
+
+   
+    const userPrompt = resumeData.user_prompt
+      ? resumeData.user_prompt
+      : 'No prompt provided by user';
 
     try {
-      const response = await axios.post(`${publicIp}/editResume`, {
-        resume: resumeData,
-        template: payload.template,
-        user_prompt: prompt,
-        user_id: userId
-      }, {
-        responseType: 'blob',
-      });
+      const response = await axios.post(
+        `${publicIp}/editResume`,
+        {
+          resume: resumeData,
+          template: payload.template,
+          user_prompt: userPrompt,
+          user_id: userId
+        },
+        {
+          responseType: 'blob'
+        }
+      );
 
       if (response.status === 200) {
         const blob = new Blob([response.data], { type: 'application/pdf' });
@@ -150,10 +185,11 @@ const EditGeneratedResume = () => {
     }
   };
 
+ 
 
   const renderStepContent = () => {
     const currentSection = steps[currentStep];
-    
+
     switch (currentSection.key) {
       case 'user_details':
         return (
@@ -166,13 +202,14 @@ const EditGeneratedResume = () => {
                   type="text"
                   value={value}
                   onChange={(e) => handleUserDetailsChange(field, e.target.value)}
-                  className="w-full border rounded px-3 py-2"
+                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder={`Enter your ${field.toLowerCase()}`}
                 />
               </div>
             ))}
           </div>
-        )
+        );
+
       case 'education':
         return (
           <div className="space-y-4">
@@ -201,8 +238,10 @@ const EditGeneratedResume = () => {
                     <input
                       type="text"
                       value={value}
-                      onChange={(e) => handleEducationChange(index, field, e.target.value)}
-                      className="w-full border rounded px-3 py-2"
+                      onChange={(e) =>
+                        handleEducationChange(index, field, e.target.value)
+                      }
+                      className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 ))}
@@ -228,8 +267,10 @@ const EditGeneratedResume = () => {
               <div key={index} className="flex gap-2">
                 <textarea
                   value={item}
-                  onChange={(e) => handleResumeChange(currentSection.key, index, e.target.value)}
-                  className="flex-1 border rounded px-3 py-2"
+                  onChange={(e) =>
+                    handleResumeChange(currentSection.key, index, e.target.value)
+                  }
+                  className="flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   rows="3"
                 />
                 <button
@@ -254,7 +295,7 @@ const EditGeneratedResume = () => {
                   type="text"
                   value={value}
                   onChange={(e) => handleSkillsChange(field, e.target.value)}
-                  className="w-full border rounded px-3 py-2"
+                  className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             ))}
@@ -278,7 +319,7 @@ const EditGeneratedResume = () => {
                 <textarea
                   value={achievement}
                   onChange={(e) => handleAchievementChange(index, e.target.value)}
-                  className="flex-1 border rounded px-3 py-2"
+                  className="flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   rows="2"
                 />
                 <button
@@ -292,10 +333,30 @@ const EditGeneratedResume = () => {
           </div>
         );
 
+      // NEW CASE: 'user_prompt'
+      case 'user_prompt':
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Custom Prompt</h2>
+            <p className="text-sm text-gray-600">
+              Provide a custom prompt for generating your resume. (Optional)
+            </p>
+            <input
+              type="text"
+              value={resumeData.user_prompt}
+              onChange={(e) => handleUserPromptChange(e.target.value)}
+              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your custom prompt"
+            />
+          </div>
+        );
+
       default:
         return null;
     }
   };
+
+  // -------------- JSX Rendering --------------
 
   return (
     <div className="flex gap-5 p-3 m-0 bg-customGrey">
@@ -307,7 +368,7 @@ const EditGeneratedResume = () => {
             Step {currentStep + 1} of {steps.length}
           </div>
         </div>
-        
+
         {/* Progress Bar */}
         <div className="w-full bg-gray-200 rounded-full h-2.5">
           <div
@@ -330,10 +391,10 @@ const EditGeneratedResume = () => {
           >
             Back
           </button>
-          
+
           {currentStep === steps.length - 1 ? (
             <button
-              onClick={() => handleSave()}
+              onClick={handleSave}
               className="px-4 py-2 bg-[#5f27c7] text-white rounded hover:bg-[#9167e1]"
             >
               Regenerate
@@ -362,25 +423,30 @@ const EditGeneratedResume = () => {
                 allowFullScreen
                 title="Loading..."
               ></iframe>
-              <p className="p-5 font-bold text-[18px]">Your resume is being regenerated...</p>
+              <p className="p-5 font-bold text-[18px]">
+                Your resume is being regenerated...
+              </p>
             </div>
           </div>
+        ) : pdfBlobUrl ? (
+          <iframe
+            src={pdfBlobUrl}
+            width="100%"
+            height="100%"
+            title="Resume Preview"
+            className="rounded-xl"
+          />
         ) : (
-          pdfBlobUrl ? (
-            <iframe
-              src={pdfBlobUrl}
-              width="100%"
-              height="100%"
-              title="Resume Preview"
-              className="rounded-xl"
-            />
-          ) : (
-            <p className="text-center p-10 text-[20px] font-bold">No resume generated yet.</p>
-          )
+          <p className="text-center p-10 text-[20px] font-bold">
+            No resume generated yet.
+          </p>
         )}
       </div>
 
-      {errorMessage && <CustomDialog message={errorMessage} onClose={() => setErrorMessage('')} />}
+      {/* Error Dialog */}
+      {errorMessage && (
+        <CustomDialog message={errorMessage} onClose={() => setErrorMessage('')} />
+      )}
     </div>
   );
 };
