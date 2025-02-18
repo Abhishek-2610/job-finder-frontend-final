@@ -1,6 +1,6 @@
 import React from "react";
 import MarqueeItem from "./MarqueeItem";
-import Font from "react-font";
+
 
 const Marquee = () => {
   const upperMarquee = [
@@ -34,9 +34,9 @@ const Marquee = () => {
   return (
     <div className="container mx-auto bg-slate-500">
       <div className="text-3xl md:text-4xl text-center font-semibold bg-gradient-to-r from-slate-500 via-black to-slate-500 text-white">
-        <Font family='Roboto'>
+      
         Get interview calls from top Companies
-        </Font>
+        
       </div>
       <MarqueeItem images={upperMarquee} from={0} to={"-100%"} />
       <MarqueeItem images={lowerMarquee} from={"-100%"} to={0} />

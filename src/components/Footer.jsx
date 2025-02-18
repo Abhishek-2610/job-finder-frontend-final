@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
 import assets from '../assets/assets';
-import Font from 'react-font';
+
 
 const Footer = () => {
   return (
@@ -13,7 +13,7 @@ const Footer = () => {
           {/* About Us */}
           <div>
             <h1 className="text-xl font-semibold mb-2">About Us</h1>
-            <Font family='Roboto'>
+          
             <p className="text-sm leading-relaxed">
               Resumer is an AI-powered resume-building solution, enabling job
               seekers to create tailored and professional resumes that align
@@ -21,7 +21,7 @@ const Footer = () => {
               in the competitive job market.
             </p>
 
-            </Font>
+      
             
           </div>
 
